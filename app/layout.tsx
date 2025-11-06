@@ -1,7 +1,6 @@
 // app/layout.tsx
-'use client' // Add this to make it a Client Component
+'use client'
 
-import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/context/AuthContext'
@@ -9,9 +8,6 @@ import { useServiceWorker } from '@/hooks/useServiceWorker'
 import { useEffect } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
-
-// Move metadata to a separate object if needed, but we'll handle it differently
-// since we're making this a client component
 
 export default function RootLayout({
   children,
@@ -33,7 +29,7 @@ export default function RootLayout({
     metaTheme.content = '#000000'
     document.head.appendChild(metaTheme)
 
-    // Add Apple specific meta tags
+    // Add Apple specific meta tags (keep these for iOS)
     const appleCapable = document.createElement('meta')
     appleCapable.name = 'apple-mobile-web-app-capable'
     appleCapable.content = 'yes'
@@ -51,8 +47,14 @@ export default function RootLayout({
 
     const appleIcon = document.createElement('link')
     appleIcon.rel = 'apple-touch-icon'
-    appleIcon.href = '/icons/icon-192x192.png'
+    appleIcon.href = '/icon-192.png' // Updated path
     document.head.appendChild(appleIcon)
+
+    // Add the non-deprecated mobile-web-app-capable tag
+    const mobileWebApp = document.createElement('meta')
+    mobileWebApp.name = 'mobile-web-app-capable'
+    mobileWebApp.content = 'yes'
+    document.head.appendChild(mobileWebApp)
   }, [])
 
   return (
